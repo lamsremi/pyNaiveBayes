@@ -37,7 +37,7 @@ def init_model(model_type, data_source="us_election"):
     model_class = importlib.import_module("library.{}.model".format(model_type))
     # Init the instance
     model = model_class.Model()
-    # Load the model
+    # Load the model parameters
     model.load(path_pickle="library/{}/params/param_{}.pkl".format(model_type, data_source))
     return model
 
