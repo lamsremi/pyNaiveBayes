@@ -39,7 +39,9 @@ def init_model(model_type):
     Return:
         model (object): loaded model
     """
+    # Import the library
     model_class = importlib.import_module("library.{}.model".format(model_type))
+    # Inits the model instance
     model = model_class.Model()
     return model
 

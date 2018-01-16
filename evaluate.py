@@ -9,6 +9,9 @@ from performance import qualitative
 from performance import quantitative
 import tools
 
+
+pd.set_option('display.width', 800)
+
 def main(data_source, model_type):
     """
     Main evaluate functions.
@@ -24,7 +27,7 @@ def main(data_source, model_type):
     # Get columns label
     label_column, prediction_column = get_columns_name(data_source)
     # Assess qualitative performance
-    qualitative.main(predicted_data_df)
+    # qualitative.main(predicted_data_df)
     # Assess quantitative performance
     result = quantitative.main(predicted_data_df, label_column, prediction_column)
     tools.print_elegant(result)
@@ -81,5 +84,5 @@ def get_columns_name(data_source):
 
 if __name__ == '__main__':
     DATA_SOURCE = "us_election"
-    MODEL_TYPE = "doityourself"
-    main(DATA_SOURCE, MODEL_TYPE)
+    for model_str in ["random", "doityourself", "scikit_learn"]:
+        main(DATA_SOURCE, model_str)
