@@ -1,13 +1,7 @@
 """
-Script to preprocess the us election dataset.
-
-source: https://github.com/saimadhu-polamuri/DataAspirant_codes/tree/
-master/Logistic_Regression/Logistic_Binary_Classification
-
-944 rows after removing wrong lines
+Script to preprocess the kaggle titanic dataset.
 """
 import pandas as pd
-import numpy as np
 
 pd.set_option('display.width', 800)
 
@@ -31,6 +25,7 @@ def load_raw_data(path_raw_data):
     """Load the raw data."""
     raw_data_df = pd.read_csv(
         path_raw_data,
+        nrows=10000,
     )
     return raw_data_df
 
@@ -53,9 +48,19 @@ def process(raw_data_df):
     """
     Process the data so it can be used by the mdoel
     """
-    data_df = raw_data_df.copy()
-    for attribute in raw_data_df.columns:
+    # Select a subset of columns
+    data_df = raw_data_df[[
+        "Pclass",
+        "Fare",
+        "Age",
+        "SibSp",
+        "Parch",
+        "Survived"]]
+    # Convert to dtype float
+    for attribute in data_df.columns:
         data_df[attribute] = raw_data_df[attribute].astype(float)
+    # Drop all the NaN value
+    data_df.dropna(inplace=True)
     return data_df
 
 

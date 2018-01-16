@@ -18,18 +18,20 @@ def main(data_source, model_type):
     Args:
     Return:
     """
+    output_names = {
+        "us_election": "vote",
+        "titanic": "Survived"
+    }
     # Load labaled data
     data_df = load_labaled_data(data_source)
     # Init the model
     model = init_model(model_type, data_source)
     # Predict all the data
-    predicted_data_df = predict_frame(data_df, model_type)
-    # Get columns label
-    label_column, prediction_column = get_columns_name(data_source)
+    predicted_data_df = predict_frame(data_df, model_type, model)
     # Assess qualitative performance
     # qualitative.main(predicted_data_df)
     # Assess quantitative performance
-    result = quantitative.main(predicted_data_df, label_column, prediction_column)
+    result = quantitative.main(predicted_data_df, output_names[data_source])
     tools.print_elegant(result)
 
 
@@ -59,7 +61,7 @@ def init_model(model_type, data_source):
     return model
 
 
-def predict_frame(data_df, model_type):
+def predict_frame(data_df, model_type, model):
     """
     Perform the prediction of all the input of the DataFrame.
     """
@@ -67,22 +69,13 @@ def predict_frame(data_df, model_type):
     for key, serie in data_df.iloc[:, :-1].iterrows():
         predicted_data_df.loc[key, "prediction"] = predict.main(
             serie,
-            model_type
+            model_type,
+            model
         )
     return predicted_data_df
 
 
-def get_columns_name(data_source):
-    """
-    Get the names of the label and prediction column.
-    """
-    prediction_column = "prediction"
-    if data_source == "us_election":
-        label_column = "vote"
-    return label_column, prediction_column
-
-
 if __name__ == '__main__':
-    DATA_SOURCE = "us_election"
-    for model_str in ["random", "doityourself", "scikit_learn"]:
-        main(DATA_SOURCE, model_str)
+    for source in ["us_election", "titanic"]:
+        for model_str in ["random", "doityourself", "scikit_learn"]:
+            main(source, model_str)

@@ -52,10 +52,12 @@ def fit(model, data_df, data_source):
     """
     if data_source == "us_election":
         parameters = model.fit(data_df, "vote")
-        tools.print_elegant(parameters)
+    elif data_source == "titanic":
+        parameters = model.fit(data_df, "Survived")
+    # tools.print_elegant(parameters)
     return model
 
 if __name__ == '__main__':
-    DATA_SOURCE = "us_election"
-    MODEL_TYPE = "scikit_learn"
-    main(DATA_SOURCE, MODEL_TYPE)
+    for source in ["us_election", "titanic"]:
+        for model_str in ["random", "doityourself", "scikit_learn"]:
+            main(source, model_str)

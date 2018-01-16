@@ -4,25 +4,24 @@ Qualitative performance.
 import pandas as pd
 
 
-def main(predicted_data_df, label_column, prediction_column):
+def main(predicted_data_df, label_column):
     """
     Main function for quantitative performance.
     """
     # Confusion matrix
     result = build_confusion_matrix(predicted_data_df,
-                                              label_column,
-                                              prediction_column)
+                                    label_column)
     return result
 
 
-def build_confusion_matrix(predicted_data_df, label_column, prediction_column):
+def build_confusion_matrix(predicted_data_df, label_column):
     """Compute confusion matrix."""
     true_pos = 0
     false_pos = 0
     true_neg = 0
     false_neg = 0
     for index, serie in predicted_data_df.iterrows():
-        prediction = serie[prediction_column]
+        prediction = serie["prediction"]
         label = serie[label_column]
         if prediction == 1:
             if label == 1:

@@ -25,7 +25,7 @@ def main(x_input, model_type, model=None):
     return prediction
 
 
-def init_model(model_type, data_source="us_election"):
+def init_model(model_type, data_source=None):
     """
     Init a model.
     Args:
