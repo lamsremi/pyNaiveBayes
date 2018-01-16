@@ -20,6 +20,7 @@ def main(data_source, model_type):
     model = fit(model, data_df, data_source)
 
     # Store the model
+    model.persist(path_pickle="library/{}/params/param_{}.pkl".format(model_type, data_source))
 
 # @tools.debug
 def load_labaled_data(data_source):
@@ -54,5 +55,5 @@ def fit(model, data_df, data_source):
 
 if __name__ == '__main__':
     DATA_SOURCE = "us_election"
-    MODEL_TYPE = "doityourself"
+    MODEL_TYPE = "scikit_learn"
     main(DATA_SOURCE, MODEL_TYPE)

@@ -1,4 +1,4 @@
-# Implementation of Naive Bayes model
+# Implementation of Gaussian Naive Bayes model
 
 
 ## Presentation

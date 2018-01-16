@@ -7,6 +7,7 @@ master/Logistic_Regression/Logistic_Binary_Classification
 944 rows after removing wrong lines
 """
 import pandas as pd
+import numpy as np
 
 pd.set_option('display.width', 800)
 
