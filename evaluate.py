@@ -24,10 +24,11 @@ def main(data_source, model_type):
     }
     # Load labaled data
     data_df = load_labaled_data(data_source)
-    # Init the model
-    model = init_model(model_type, data_source)
     # Predict all the data
-    predicted_data_df = predict_frame(data_df, model_type, model)
+    predicted_data_df = predict_frame(
+        data_df,
+        model_type,
+        model_version=data_source)
     # Assess qualitative performance
     # qualitative.main(predicted_data_df)
     # Assess quantitative performance
@@ -44,24 +45,7 @@ def load_labaled_data(data_source):
     return data_df
 
 
-def init_model(model_type, data_source):
-    """
-    Init a model.
-    Args:
-        model_type (str): type of the model to init.
-    Return:
-        model (object): loaded model
-    """
-    # Import the good model
-    model_class = importlib.import_module("library.{}.model".format(model_type))
-    # Init the instance
-    model = model_class.Model()
-    # Load the model
-    model.load(path_pickle="library/{}/params/param_{}.pkl".format(model_type, data_source))
-    return model
-
-
-def predict_frame(data_df, model_type, model):
+def predict_frame(data_df, model_type, model_version):
     """
     Perform the prediction of all the input of the DataFrame.
     """
@@ -70,8 +54,7 @@ def predict_frame(data_df, model_type, model):
         predicted_data_df.loc[key, "prediction"] = predict.main(
             serie,
             model_type,
-            model
-        )
+            model_version)
     return predicted_data_df
 
 

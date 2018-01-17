@@ -21,14 +21,14 @@ class Model():
         """Fit method."""
         self.parameters = 0
 
-    def persist(self, path_pickle="library/doityourself/params/param_1.pkl"):
+    def persist_parameters(self, path_pickle="library/doityourself/params/param_1.pkl"):
         """
         Persist the model parameters..
         """
         with open(path_pickle, 'wb') as handle:
             pickle.dump(self.parameters, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def load(self, path_pickle="library/doityourself/params/param_1.pkl"):
+    def load_parameters(self, path_pickle="library/doityourself/params/param_1.pkl"):
         """
         Load parameters model.
         """

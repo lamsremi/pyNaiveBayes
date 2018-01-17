@@ -37,14 +37,14 @@ class Model():
         prediction = self.gnb.predict(x_array)
         return prediction
 
-    def persist(self, path_pickle="library/scikit_learn/params/param_0.pkl"):
+    def persist_parameters(self, path_pickle="library/scikit_learn/params/param_0.pkl"):
         """
-        Persist the model parameters..
+        Persist the model parameters.
         """
         with open(path_pickle, 'wb') as handle:
             pickle.dump(self.gnb, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def load(self, path_pickle="library/scikit_learn/params/param_0.pkl"):
+    def load_parameters(self, path_pickle="library/scikit_learn/params/param_0.pkl"):
         """
         Load parameters model.
         """

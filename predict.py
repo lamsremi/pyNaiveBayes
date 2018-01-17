@@ -9,7 +9,7 @@ import tools
 
 
 # @tools.debug
-def main(x_input, model_type, model=None):
+def main(x_input, model_type, model_version):
     """
     Main prediction function.
     Args:
@@ -18,14 +18,16 @@ def main(x_input, model_type, model=None):
         model (object): specific model to use
     """
     # Init a model if none
-    if model is None:
-        model = init_model(model_type)
+    model = init_model(model_type)
+    # Load the model parameters
+    model.load_parameters(path_pickle="library/{}/params/param_{}.pkl".format(
+        model_type, model_version))
     # Predict
     prediction = model.predict(x_input)
     return prediction
 
 
-def init_model(model_type, data_source=None):
+def init_model(model_type):
     """
     Init a model.
     Args:
@@ -37,8 +39,6 @@ def init_model(model_type, data_source=None):
     model_class = importlib.import_module("library.{}.model".format(model_type))
     # Init the instance
     model = model_class.Model()
-    # Load the model parameters
-    model.load(path_pickle="library/{}/params/param_{}.pkl".format(model_type, data_source))
     return model
 
 

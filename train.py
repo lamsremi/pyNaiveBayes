@@ -19,8 +19,9 @@ def main(data_source, model_type):
     # Train the model
     model = fit(model, data_df, data_source)
 
-    # Store the model
-    model.persist(path_pickle="library/{}/params/param_{}.pkl".format(model_type, data_source))
+    # Store the model parameters.
+    model.persist_parameters(path_pickle="library/{}/params/param_{}.pkl".format(
+        model_type, data_source))
 
 # @tools.debug
 def load_labaled_data(data_source):
@@ -51,10 +52,9 @@ def fit(model, data_df, data_source):
     Fit task.
     """
     if data_source == "us_election":
-        parameters = model.fit(data_df, "vote")
+        model.fit(data_df, "vote")
     elif data_source == "titanic":
-        parameters = model.fit(data_df, "Survived")
-    # tools.print_elegant(parameters)
+        model.fit(data_df, "Survived")
     return model
 
 if __name__ == '__main__':

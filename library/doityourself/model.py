@@ -71,16 +71,15 @@ class Model():
                     "variance": data_df_label[column].var()
                 }
         self.parameters = parameters
-        return parameters
 
-    def persist(self, path_pickle="library/doityourself/params/param_0.pkl"):
+    def persist_parameters(self, path_pickle="library/doityourself/params/param_0.pkl"):
         """
         Persist the model parameters..
         """
         with open(path_pickle, 'wb') as handle:
             pickle.dump(self.parameters, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def load(self, path_pickle="library/doityourself/params/param_0.pkl"):
+    def load_parameters(self, path_pickle="library/doityourself/params/param_0.pkl"):
         """
         Load parameters model.
         """
