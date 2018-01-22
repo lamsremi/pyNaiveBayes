@@ -1,6 +1,8 @@
 """
 Random standard model.
 """
+import os
+import shutil
 import random
 import pickle
 
@@ -10,27 +12,38 @@ class Model():
     """
     def __init__(self):
         """Init the model."""
-        self.parameters = None
+        self._parameters = None
 
     def predict(self, input):
         """Predict method."""
         prediction = random.randint(0, 1)
         return prediction
 
-    def fit(self, data_df, label_column):
+    def fit(self, data_df):
         """Fit method."""
-        self.parameters = 0
+        self._parameters = 0
 
-    def persist_parameters(self, path_pickle="library/doityourself/params/param_1.pkl"):
+    def persist_parameters(self, model_version):
         """
         Persist the model parameters..
         """
-        with open(path_pickle, 'wb') as handle:
-            pickle.dump(self.parameters, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        # Set folder of the param
+        folder_path = "library/random/params/{}/".format(model_version)
 
-    def load_parameters(self, path_pickle="library/doityourself/params/param_1.pkl"):
+        # Create folder
+        if not os.path.isdir(folder_path):
+            os.mkdir(folder_path)
+
+        # Save params
+        with open(folder_path + "params.pkl", 'wb') as handle:
+            pickle.dump(self._parameters, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def load_parameters(self, model_version):
         """
         Load parameters model.
         """
-        with open(path_pickle, 'rb') as handle:
-            self.parameters = pickle.load(handle)
+        # Set folder of the param
+        folder_path = "library/random/params/{}/".format(model_version)
+
+        with open(folder_path + "params.pkl", 'rb') as handle:
+            self._parameters = pickle.load(handle)

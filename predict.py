@@ -9,19 +9,20 @@ import tools
 
 
 # @tools.debug
-def main(x_input, model_type, model_version):
+def main(x_input,
+         model_type,
+         model_version):
     """
     Main prediction function.
     Args:
         x_input (Serie or dict): input to predict
         model_type (str): type of the chosen model for the prediction
-        model (object): specific model to use
+        model_version (str): version of model to use.
     """
     # Init a model if none
     model = init_model(model_type)
     # Load the model parameters
-    model.load_parameters(path_pickle="library/{}/params/param_{}.pkl".format(
-        model_type, model_version))
+    model.load_parameters(model_version)
     # Predict
     prediction = model.predict(x_input)
     return prediction
@@ -54,5 +55,7 @@ if __name__ == '__main__':
         "educ": 4,
         "income": 15
     })
-    MODEL_TYPE = "scikit_learn"
-    main(X_INPUT, MODEL_TYPE)
+    for model_str in ["random", "doityourself", "scikit_learn"]:
+        main(x_input=X_INPUT,
+             model_type=model_str,
+             model_version="us_election")

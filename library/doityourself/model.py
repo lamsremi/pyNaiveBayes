@@ -1,6 +1,7 @@
 """
 Do it yourself Naive Bayes model.
 """
+import os
 import pickle
 import math
 
@@ -11,7 +12,7 @@ class Model():
     """
     def __init__(self):
         """Init the model."""
-        self.parameters = {}
+        self._parameters = {}
 
     def predict(self, input_var):
         """
@@ -20,7 +21,7 @@ class Model():
             input_var (Serie or dict): input to predict the class from.
         """
         # Copy the model parameters for code readebility
-        param = self.parameters
+        param = self._parameters
         # Compute the probability fo each of class/label given the input
         probabilities = {}
         for label, param_label in param.items():
@@ -50,13 +51,14 @@ class Model():
         )
         return var_likelihood
 
-    def fit(self, data_df, label_column=None):
+    def fit(self, data_df):
         """
         Train the model.
         Args:
             data_df (DataFrame): training dataset
-            label_column (str): name of the label column
         """
+        # Set the label columns as the last one
+        label_column = list(data_df.columns)[-1]
         # Get the list of classes
         labels = data_df[label_column].unique()
         parameters = {}
@@ -70,18 +72,29 @@ class Model():
                     "mean": data_df_label[column].mean(),
                     "variance": data_df_label[column].var()
                 }
-        self.parameters = parameters
+        self._parameters = parameters
 
-    def persist_parameters(self, path_pickle="library/doityourself/params/param_0.pkl"):
+    def persist_parameters(self, model_version):
         """
         Persist the model parameters..
         """
-        with open(path_pickle, 'wb') as handle:
-            pickle.dump(self.parameters, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        # Set folder of the param
+        folder_path = "library/doityourself/params/{}/".format(model_version)
 
-    def load_parameters(self, path_pickle="library/doityourself/params/param_0.pkl"):
+        # Create folder
+        if not os.path.isdir(folder_path):
+            os.mkdir(folder_path)
+
+        # Save params
+        with open(folder_path + "params.pkl", 'wb') as handle:
+            pickle.dump(self._parameters, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def load_parameters(self, model_version):
         """
         Load parameters model.
         """
-        with open(path_pickle, 'rb') as handle:
-            self.parameters = pickle.load(handle)
+        # Set folder of the param
+        folder_path = "library/doityourself/params/{}/".format(model_version)
+
+        with open(folder_path + "params.pkl", 'rb') as handle:
+            self._parameters = pickle.load(handle)

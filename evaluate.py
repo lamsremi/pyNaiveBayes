@@ -18,19 +18,23 @@ def main(data_source, model_type):
     Args:
     Return:
     """
+    # Declare label name
     output_names = {
         "us_election": "vote",
         "titanic": "Survived"
     }
     # Load labaled data
     data_df = load_labaled_data(data_source)
+
     # Predict all the data
     predicted_data_df = predict_frame(
         data_df,
         model_type,
         model_version=data_source)
+
     # Assess qualitative performance
     # qualitative.main(predicted_data_df)
+
     # Assess quantitative performance
     result = quantitative.main(predicted_data_df, output_names[data_source])
     tools.print_elegant(result)

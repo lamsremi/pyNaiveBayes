@@ -6,22 +6,27 @@ import pandas as pd
 
 import tools
 
-def main(data_source, model_type):
+
+def main(data_df=None,
+         data_source=None,
+         model_type=None):
     """
     Main function for training.
     """
-    # Load labaled data
-    data_df = load_labaled_data(data_source)
+
+    if data_df is None:
+        # Load labaled data
+        data_df = load_labaled_data(data_source)
 
     # Init the model
     model = init_model(model_type)
 
     # Train the model
-    model = fit(model, data_df, data_source)
+    model.fit(data_df)
 
     # Store the model parameters.
-    model.persist_parameters(path_pickle="library/{}/params/param_{}.pkl".format(
-        model_type, data_source))
+    model.persist_parameters(model_version=data_source)
+
 
 # @tools.debug
 def load_labaled_data(data_source):
@@ -47,17 +52,9 @@ def init_model(model_type):
     return model
 
 
-def fit(model, data_df, data_source):
-    """
-    Fit task.
-    """
-    if data_source == "us_election":
-        model.fit(data_df, "vote")
-    elif data_source == "titanic":
-        model.fit(data_df, "Survived")
-    return model
-
 if __name__ == '__main__':
     for source in ["us_election", "titanic"]:
         for model_str in ["random", "doityourself", "scikit_learn"]:
-            main(source, model_str)
+            main(data_df=None,
+                 data_source=source,
+                 model_type=model_str)
