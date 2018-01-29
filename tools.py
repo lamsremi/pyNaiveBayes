@@ -1,6 +1,5 @@
 """
-This module includes the common decorators used
-for the Bahamas project python script
+This module includes the decorators used for debugging.
 """
 
 import time
