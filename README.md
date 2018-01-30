@@ -1,4 +1,4 @@
-# Gaussian Naive Bayes model from scratch
+# Gaussian Naive Bayes Implementation
 
 
 ## Introduction
