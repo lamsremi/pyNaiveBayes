@@ -25,7 +25,8 @@ The application of the theorem to compute conditional probability is made possib
 
 To model the probability distribution of a value given the a class, Gaussian Naive Bayes assume that the continuous values associated with each class are distributed according to a Gaussian distribution.
 
-Despite oversimplified assumptions, GNB have works well in many real world application due to his ease of training.
+Despite oversimplified assumptions, GNB have works well in many real world application. This could be due to the fact that the dependences distribute evenly in classes, or that they cancel
+each other out. (Harry Zhang - The Optimality of Naive Bayes)
 
 # Python programming
 
