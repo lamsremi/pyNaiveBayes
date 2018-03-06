@@ -17,7 +17,7 @@ It is also a valuable exercice to practice python programming.
 
 ## Information gained
 
-# Gaussian Naive Bayes
+### Gaussian Naive Bayes
 
 Gaussian Naive Bayes is part of the family of Naive Bayes classifiers, which apply Bayes theorem.
 
@@ -28,7 +28,7 @@ To model the probability distribution of a value given the a class, Gaussian Nai
 Despite oversimplified assumptions, GNB have works well in many real world application. This could be due to the fact that the dependences distribute evenly in classes, or that they cancel
 each other out. (Harry Zhang - The Optimality of Naive Bayes)
 
-# Python programming
+### Python programming
 
 ## Code structure
 
