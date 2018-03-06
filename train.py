@@ -1,45 +1,52 @@
+"""Script to fit naive bayes models.
 """
-Script to train models.
-"""
+import pickle
 import importlib
-import pandas as pd
 
 import tools
 
 
-def main(data_df=None,
+def main(labeled_data=None,
          data_source=None,
-         model_type=None):
-    """
-    Main function for training.
+         model_type=None,
+         model_version=None):
+    """Main function for fitting a model to labeled data.
+    Args:
+        labeled_data (list): table of labeled data.
+        [
+            ([ 0.0, 6.0, 6.0, 2.0], 1.0)
+            ([ 8.0, 7.0, 4.0, 2.0], 1.0)
+        ]
+        data_source (str): source in case no data is given.
+        model_type (str): type of model to use. (ie. pure_python or scikit_learn)
+        model_version (str): version of model to use.
     """
 
-    if data_df is None:
+    if labeled_data is None:
         # Load labaled data
-        data_df = load_labaled_data(data_source)
+        labeled_data = load_labaled_data(data_source)
 
     # Init the model
     model = init_model(model_type)
 
     # Train the model
-    model.fit(data_df)
+    model.fit(labeled_data)
 
     # Store the model parameters.
-    model.persist_parameters(model_version=data_source)
+    model.persist_parameters(model_version=model_version)
 
 
 # @tools.debug
 def load_labaled_data(data_source):
+    """Load labeled data.
     """
-    Load labeled data.
-    """
-    data_df = pd.read_pickle("data/{}/data.pkl".format(data_source))
-    return data_df
+    with open("data/{}/data.pkl".format(data_source), "rb") as handle:
+        labeled_data = pickle.load(handle)
+    return labeled_data
 
 
 def init_model(model_type):
-    """
-    Init a model.
+    """Instantiate a model.
     Args:
         model_type (str): type of the model to init.
     Return:
@@ -53,8 +60,9 @@ def init_model(model_type):
 
 
 if __name__ == '__main__':
-    for source in ["us_election", "titanic"]:
-        for model_str in ["random", "doityourself", "scikit_learn"]:
-            main(data_df=None,
+    for source in ["us_election"]:
+        for model_str in ["pure_python", "scikit_learn"]:
+            main(labeled_data=None,
                  data_source=source,
-                 model_type=model_str)
+                 model_type=model_str,
+                 model_version="X")

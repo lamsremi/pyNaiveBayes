@@ -1,68 +1,46 @@
+"""Evaluation module.
 """
-Script to evaluate performances of model.
-"""
+import pickle
 import importlib
-import pandas as pd
 
 import predict
-from performance import qualitative
-from performance import quantitative
+from benchmark import performance
 import tools
 
 
-pd.set_option('display.width', 800)
-
-def main(data_source, model_type):
-    """
-    Main evaluate functions.
+@tools.debug
+def main(data_source, model_type, model_version):
+    """Evaluate the performance of a model.
     Args:
-    Return:
+        data_source (str)
+        model_type (str)
+        model_version (str)
     """
-    # Declare label name
-    output_names = {
-        "us_election": "vote",
-        "titanic": "Survived"
-    }
     # Load labaled data
-    data_df = load_labaled_data(data_source)
+    labeled_data = load_labaled_data(data_source)
 
-    # Predict all the data
-    predicted_data_df = predict_frame(
-        data_df,
-        model_type,
-        model_version=data_source)
+    # Extract inputs and outputs data
+    inputs_data = [row[0] for row in labeled_data]
+    outputs_data = [row[1] for row in labeled_data]
 
-    # Assess qualitative performance
-    # qualitative.main(predicted_data_df)
+    # Perform a prediction
+    predictions = predict.main(inputs_data, model_type, model_version)
 
     # Assess quantitative performance
-    result = quantitative.main(predicted_data_df, output_names[data_source])
-    tools.print_elegant(result)
+    result = performance.confusion_matrix(predictions, outputs_data)
+    return result
 
 
 # @tools.debug
 def load_labaled_data(data_source):
+    """Load labeled data.
     """
-    Load labeled data.
-    """
-    data_df = pd.read_pickle("data/{}/data.pkl".format(data_source))
-    return data_df
-
-
-def predict_frame(data_df, model_type, model_version):
-    """
-    Perform the prediction of all the input of the DataFrame.
-    """
-    predicted_data_df = data_df.copy()
-    for key, serie in data_df.iloc[:, :-1].iterrows():
-        predicted_data_df.loc[key, "prediction"] = predict.main(
-            serie,
-            model_type,
-            model_version)
-    return predicted_data_df
+    with open("data/{}/data.pkl".format(data_source), "rb") as handle:
+        labeled_data = pickle.load(handle)
+    return labeled_data
 
 
 if __name__ == '__main__':
-    for source in ["us_election", "titanic"]:
-        for model_str in ["random", "doityourself", "scikit_learn"]:
-            main(source, model_str)
+    for source in ["us_election"]:
+        for model_str in ["pure_python", "scikit_learn"]:
+            main(source, model_str, "X")

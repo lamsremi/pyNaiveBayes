@@ -1,74 +1,90 @@
-# Gaussian Naive Bayes Implementation
+# Gaussian Naive Bayes
 
 
 ## Introduction
 
-This module presents 2 different implementations of the same Naive Bayes Classifier:
-* Using machine learning framework scikit-learn.
-* From scratch using pandas library.
-
-The implemented model is a basic Naive Bayes Classifier with the following attributes:
-* Continuous variables.
-* Gaussian naive Bayes assuming the continuous values are distributed according to a Gaussian distribution.
-* Independant features (Naive hypothese)
-* Binomial classifier
+This module presents 2 different implementations of a Naive Bayes Classifier:
+* In pure python.
+* And using scikit-learn framework.
 
 
 ## Motivation
 
-The purpose of this exercice is to gain a better understanding of Naive Bayes classifier, as it is one of the simplest yet still one of the best choice in many practical applications.
+The purpose of this exercice is to gain a better understanding of Naive Bayes classifier, as it is one of the simplest yet still one of the favorite choice in many practical applications.
 
-It is also a valuable exercice to practice and improve python programming skills.
+It is also a valuable exercice to practice python programming.
+
+
+## Information gained
+
+# Gaussian Naive Bayes
+
+Gaussian Naive Bayes is part of the family of Naive Bayes classifiers, which apply Bayes theorem.
+
+The application of the theorem to compute conditional probability is made possible with the assumption that all the features are independent between each others, allowing to compute the probabilties for each feature separately and combine them together.
+
+To model the probability distribution of a value given the a class, Gaussian Naive Bayes assume that the continuous values associated with each class are distributed according to a Gaussian distribution.
+
+Despite oversimplified assumptions, GNB have works well in many real world application due to his ease of training.
+
+# Python programming
 
 ## Code structure
 
 The code is structured as follow:
 ```
-pyNeuralNet
-├- data
-│   ├- titanic
+pyNaiveBayes
+├- data/
+│   │
+│   ├- titanic/
 │   │   ├- raw_data
 │   │   │   └- data.csv
-│   │   └- data.pkl
-│   └- us_election
+│   │   ├- data.pkl
+│   │   └- preprocess.py
+│   │
+│   └- us_election/
 │       ├- raw_data
 │       │   └- data.csv
-│       └- data.pkl
-├- library
-│   ├- doityourself
+│       ├- data.pkl
+│       └- preprocess.py
+│
+├- library/
+│   │
+│   ├- pure_python/
 │   │   ├- params
 │   │   └- model.py
-│   ├- random
-│   │   ├- params
-│   │   └- model.py
-│   └- scikit-learn
+│   │
+│   └- scikit-learn/
 │       ├- params
 │       └- model.py
-├- performance
-│   ├- qualitative.py
-│   └- quantitative.py
-├- .gitignore
+│
+├- benchmark/
+│   └- performance.py
+│
 ├- evaluate.py
 ├- predict.py
+├- prepare.py
+├- train.py
+│
 ├- README.md
-├- requirements.txt
-├- tools.py
-└- train.py
+├- .gitignore
+└- requirements.txt
 ```
 
 The module has 3 main fucntionnalities:
 * train.py: fit a model given a set of data.
-* predict.py: perform a prediction given a previoulsy fitted model.
-* evaluate.py: evaluate the performance a model using different metrics.
+* predict.py: perform a prediction.
+* evaluate.py: evaluate the performance a model.
 
 
 ## Installation
 
-To dowload the different implementations of neural networks, you can directly clone the repository
+To clone the repository :
 ```
 git clone https://github.com/lamsremi/pyNaiveBayes.git
 ```
-Then install the requirements in your environment or in a virtual one
+
+To install the dependencies :
 ```
 pip install -r requirements.txt
 ```
@@ -77,22 +93,16 @@ pip install -r requirements.txt
 
 ```
 # Training
->>> from train import main
->>> for source in ["us_election", "titanic"]:
-        for model in ["random", "doityourself", "scikit_learn]:
-            main(data_df=None,
-                 data_source=source,
-                 model_type=model)
+>>> import train
+>>> train.main(data_source="us_election",
+               model="pure_python")
 
 # Prediction
->>>from predict import main
->>> X_INPUT = pd.Series({"popul": 300, "TVnews": 3, "selfLR": 3, "ClinLR": 3,
-        "DoleLR": 5, "PID": 1, "age": 45, "educ": 4, "income": 15 })
-    for source in ["us_election"]:
-        for model in ["doityourself", "random", "scikit_learn"]:
-            main(x_input=X_INPUT,
-                 model_type=model,
-                 model_version=source)
+>>> inputs_data = [row[0] for row in load_labaled_data("us_election")][0:100]
+>>> for model in ["pure_python", "scikit_learn"]:
+        predict.main(inputs_data=inputs_data,
+                     model_type=model,
+                     model_version="X")
 ```
 
 ## Author

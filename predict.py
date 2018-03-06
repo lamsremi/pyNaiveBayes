@@ -1,21 +1,20 @@
 """
 Script for prediction.
 """
+import pickle
 import importlib
-import numpy as np
-import pandas as pd
 
 import tools
 
 
 # @tools.debug
-def main(x_input,
+def main(inputs_data,
          model_type,
          model_version):
     """
     Main prediction function.
     Args:
-        x_input (Serie or dict): input to predict
+        inputs_data (array-like): list of inputs to predict.
         model_type (str): type of the chosen model for the prediction
         model_version (str): version of model to use.
     """
@@ -24,8 +23,9 @@ def main(x_input,
     # Load the model parameters
     model.load_parameters(model_version)
     # Predict
-    prediction = model.predict(x_input)
-    return prediction
+    predictions = model.predict(inputs_data)
+    # Return
+    return predictions
 
 
 def init_model(model_type):
@@ -42,20 +42,18 @@ def init_model(model_type):
     model = model_class.Model()
     return model
 
+# @tools.debug
+def load_labaled_data(data_source):
+    """Load labeled data.
+    """
+    with open("data/{}/data.pkl".format(data_source), "rb") as handle:
+        labeled_data = pickle.load(handle)
+    return labeled_data
+
 
 if __name__ == '__main__':
-    X_INPUT = pd.Series({
-        "popul": 300,
-        "TVnews": 3,
-        "selfLR": 3,
-        "ClinLR": 3,
-        "DoleLR": 5,
-        "PID": 1,
-        "age": 45,
-        "educ": 4,
-        "income": 15
-    })
-    for model_str in ["random", "doityourself", "scikit_learn"]:
-        main(x_input=X_INPUT,
+    inputs_data = [row[0] for row in load_labaled_data("us_election")][0:100]
+    for model_str in ["pure_python", "scikit_learn"]:
+        main(inputs_data=inputs_data,
              model_type=model_str,
-             model_version="us_election")
+             model_version="X")

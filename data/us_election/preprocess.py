@@ -1,30 +1,31 @@
-"""
-Script to preprocess the us election dataset.
+"""Script used to preprocess the us election data.
 
-source: https://github.com/saimadhu-polamuri/DataAspirant_codes/tree/
-master/Logistic_Regression/Logistic_Binary_Classification
-
-944 rows after removing wrong lines
+source:
+https://github.com/saimadhu-polamuri/DataAspirant_codes/tree/master/Logistic_Regression/Logistic_Binary_Classification
 """
+import pickle
+
 import pandas as pd
-import numpy as np
 
-pd.set_option('display.width', 800)
+import tools
+
 
 def main():
     """
     Preprocess the data.
     """
     # Load the raw data
-    raw_data_df = load_raw_data(path_raw_data="raw_data/data.csv")
+    raw_data_df = load_raw_data(path_raw_data="data/us_election/raw_data/data.csv")
     # Study data
-    study_data(raw_data_df)
+    # study_data(raw_data_df)
     # Transform the data
     data_df = process(raw_data_df)
     # Study transformed data
-    study_data(data_df)
+    # study_data(data_df)
+    # Format data
+    labeled_data = format_data(data_df)
     # Store the data
-    store(data_df, path_preprocessed_data="data.pkl")
+    store(labeled_data, path_preprocessed_data="data/us_election/data.pkl")
 
 
 def load_raw_data(path_raw_data):
@@ -50,21 +51,22 @@ def study_data(data_df):
 
 
 def process(raw_data_df):
-    """
-    Process the data so it can be used by the mdoel
+    """Clean the data.
     """
     data_df = raw_data_df.copy()
     for attribute in raw_data_df.columns:
         data_df[attribute] = raw_data_df[attribute].astype(float)
     return data_df
 
+@tools.debug
+def format_data(data_df):
+    """Format the data.
+    """
+    labeled_data = [(list(row[1:-1]), row[-1]) for row in data_df.itertuples()]
+    return labeled_data
 
-def store(data_df, path_preprocessed_data):
+
+def store(labeled_data, path_preprocessed_data):
     """Store the processed data."""
-    data_df.to_pickle(
-        path_preprocessed_data,
-    )
-
-
-if __name__ == '__main__':
-    main()
+    with open(path_preprocessed_data, "wb") as handle:
+        pickle.dump(labeled_data, handle)
