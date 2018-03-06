@@ -68,8 +68,10 @@ class Model():
                 )
             ]
         """
+        # List of labels
+        labels = [row[1] for row in labeled_data]
         # Get the list of unique labels
-        unique_labels = list(set([row[1] for row in labeled_data]))
+        unique_labels = list(set(labels))
         self._parameters = []
         # Compute the dimension
         dimension = len(labeled_data[0][0])

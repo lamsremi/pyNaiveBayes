@@ -60,9 +60,9 @@ def init_model(model_type):
 
 
 if __name__ == '__main__':
-    for source in ["us_election"]:
+    for source in ["us_election", "titanic"]:
         for model_str in ["pure_python", "scikit_learn"]:
             main(labeled_data=None,
                  data_source=source,
                  model_type=model_str,
-                 model_version="X")
+                 model_version=source)

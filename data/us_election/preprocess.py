@@ -11,9 +11,7 @@ import tools
 
 
 def main():
-    """
-    Preprocess the data.
-    """
+    """Preprocess the data."""
     # Load the raw data
     raw_data_df = load_raw_data(path_raw_data="data/us_election/raw_data/data.csv")
     # Study data
@@ -37,9 +35,7 @@ def load_raw_data(path_raw_data):
 
 
 def study_data(data_df):
-    """
-    Examine the data.
-    """
+    """Examine the data."""
     # Display shape
     print("- shape :\n{}\n".format(data_df.shape))
     # Display data dataframe (raws and columns)

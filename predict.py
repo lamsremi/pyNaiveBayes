@@ -52,8 +52,9 @@ def load_labaled_data(data_source):
 
 
 if __name__ == '__main__':
-    inputs_data = [row[0] for row in load_labaled_data("us_election")][0:100]
-    for model_str in ["pure_python", "scikit_learn"]:
-        main(inputs_data=inputs_data,
-             model_type=model_str,
-             model_version="X")
+    for data_source in ["us_election", "titanic"]:
+        inputs_data = [row[0] for row in load_labaled_data(data_source)][0:100]
+        for model_str in ["pure_python", "scikit_learn"]:
+            main(inputs_data=inputs_data,
+                 model_type=model_str,
+                 model_version=data_source)

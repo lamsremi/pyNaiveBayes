@@ -41,6 +41,6 @@ def load_labaled_data(data_source):
 
 
 if __name__ == '__main__':
-    for source in ["us_election"]:
+    for source in ["titanic", "us_election"]:
         for model_str in ["pure_python", "scikit_learn"]:
-            main(source, model_str, "X")
+            main(source, model_str, source)

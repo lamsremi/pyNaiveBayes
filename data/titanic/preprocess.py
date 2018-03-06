@@ -1,24 +1,25 @@
+"""Script to preprocess the kaggle titanic dataset.
 """
-Script to preprocess the kaggle titanic dataset.
-"""
+import pickle
+
 import pandas as pd
 
-pd.set_option('display.width', 800)
+import tools
 
 def main():
-    """
-    Preprocess the data.
-    """
+    """Preprocess the data."""
     # Load the raw data
-    raw_data_df = load_raw_data(path_raw_data="raw_data/data.csv")
+    raw_data_df = load_raw_data(path_raw_data="data/titanic/raw_data/data.csv")
     # Study data
     study_data(raw_data_df)
     # Transform the data
     data_df = process(raw_data_df)
     # Study transformed data
     study_data(data_df)
+    # Format data
+    labeled_data = format_data(data_df)
     # Store the data
-    store(data_df, path_preprocessed_data="data.pkl")
+    store(labeled_data, path_preprocessed_data="data/titanic/data.pkl")
 
 
 def load_raw_data(path_raw_data):
@@ -31,9 +32,7 @@ def load_raw_data(path_raw_data):
 
 
 def study_data(data_df):
-    """
-    Examine the data.
-    """
+    """Examine the data."""
     # Display shape
     print("- shape :\n{}\n".format(data_df.shape))
     # Display data dataframe (raws and columns)
@@ -45,8 +44,7 @@ def study_data(data_df):
 
 
 def process(raw_data_df):
-    """
-    Process the data so it can be used by the mdoel
+    """Clean the data.
     """
     # Select a subset of columns
     data_df = raw_data_df[[
@@ -56,20 +54,22 @@ def process(raw_data_df):
         "SibSp",
         "Parch",
         "Survived"]]
-    # Convert to dtype float
+    # Convert to float type
     for attribute in data_df.columns:
         data_df[attribute] = raw_data_df[attribute].astype(float)
-    # Drop all the NaN value
     data_df.dropna(inplace=True)
     return data_df
 
 
-def store(data_df, path_preprocessed_data):
+@tools.debug
+def format_data(data_df):
+    """Format the data.
+    """
+    labeled_data = [(list(row[1:-1]), row[-1]) for row in data_df.itertuples()]
+    return labeled_data
+
+
+def store(labeled_data, path_preprocessed_data):
     """Store the processed data."""
-    data_df.to_pickle(
-        path_preprocessed_data,
-    )
-
-
-if __name__ == '__main__':
-    main()
+    with open(path_preprocessed_data, "wb") as handle:
+        pickle.dump(labeled_data, handle)
