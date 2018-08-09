@@ -38,8 +38,7 @@ def main(labeled_data=None,
 
 # @tools.debug
 def load_labaled_data(data_source):
-    """Load labeled data.
-    """
+    """Load labeled data."""
     with open("data/{}/data.pkl".format(data_source), "rb") as handle:
         labeled_data = pickle.load(handle)
     return labeled_data
@@ -50,7 +49,7 @@ def init_model(model_type):
     Args:
         model_type (str): type of the model to init.
     Return:
-        model (object): loaded model
+        model (Model): instance of Model.
     """
     # Import the library
     model_class = importlib.import_module("library.{}.model".format(model_type))
